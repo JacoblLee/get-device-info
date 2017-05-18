@@ -1,0 +1,104 @@
+<!-- @author  :chenzejiang(email:820289461@qq.com) -->
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>设备信息获取</title>
+    <meta name="Robots" content="All" />
+    <meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,width=device-width, user-scalable=no, minimal-ui">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no, email=no" name="format-detection">
+    <!--CSS-->
+    <link rel="stylesheet" href="css/base.css" type="text/css">
+    <style type="text/css">
+     body{padding:0 10px;}
+     body div{margin:10px 0;}
+     p{font-size:14px;line-height: 21px;}
+     p em{color: #f00;font-weight: bolder;margin:0 4px;}
+     .qrcode_p{font-weight: bolder;}
+    </style>
+</head>
+<body>
+
+<div>
+    <p>浏览器时下窗口可视区域宽度:<em id="window_w"></em></p>
+    <p>浏览器时下窗口可视区域高度:<em id="window_h"></em></p>
+</div>
+
+<div>
+    <p>浏览器时下窗口文档的宽度:<em id="document_w"></em></p>
+    <p>浏览器时下窗口文档的高度:<em id="document_h"></em></p>
+</div>
+
+<div>
+    <p>浏览器时下窗口文档body的宽度:<em id="document_body_w"></em></p>
+    <p>浏览器时下窗口文档body的高度:<em id="document_body_h"></em></p>
+</div>
+
+<div>
+  <p>浏览器时下窗口文档body的总宽度(true):<em id="document_body_true_w"></em></p>
+  <p>浏览器时下窗口文档body的总高度(true):<em id="document_body_true_h"></em></p>
+</div>
+
+<div>
+  <p>屏幕分辨率的宽:<em id="window_screen_w"></em></p>
+  <p>屏幕分辨率的高:<em id="window_screen_h"></em></p>
+</div>
+
+<div>
+  <p>IP地址:<em id="ip_address"></em></p>
+  <p>物理地址:<em id="physics_address"></em></p>
+  <p id="l_a">本地地址:<em id="localhost_address"></em></p>
+</div>
+
+<p class="qrcode_p">当前页面二维码如下:</p>
+<div id="qrcode"></div>
+
+<!--获取实际ip-->
+<script src="//chenzejiang.com/cdn/frame/vconsole/vconsole.min.js" type="text/javascript"></script>
+<script src="//chenzejiang.com/cdn/frame/jquery/jquery-1.11.0.min.js" type="text/javascript"></script>
+<script src="//chenzejiang.com/cdn/frame/qrcode/js.qrcode.min.js" type="text/javascript"></script>
+<script src="http://pv.sohu.com/cityjson?ie=utf-8" type="text/javascript"></script>
+<script src="info.php" type="text/javascript"></script>
+<script type="text/javascript">
+(function(){
+    function info_wh(){
+        $("#window_w").html($(window).width());
+        $("#window_h").html($(window).height());
+
+        $("#document_w").html($(document).width());
+        $("#document_h").html($(document).height());
+
+        $("#document_body_w").html($(document.body).width());
+        $("#document_body_h").html($(document.body).height());
+
+        $("#document_body_true_w").html($(document.body).outerWidth(true));
+        $("#document_body_true_h").html($(document.body).outerHeight(true));
+
+        $("#window_screen_w").html(window.screen.width);
+        $("#window_screen_h").html(window.screen.height);
+
+        $("#ip_address").html(returnCitySN["cip"]);
+        $("#physics_address").html(returnCitySN["cname"]);
+    }
+    var host = window.location.host;
+    if(host.indexOf("192.168") !== -1){
+        $.getScript("info.php");
+    }else{
+        $("#l_a").remove();
+    }
+    var qrcode = new QRCode(document.getElementById("qrcode"), {
+        text: window.location.href ,
+        width: 150,
+        height: 150,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+    });
+    $(window).on("load resize",function(){
+       info_wh();
+    });
+})();
+</script>
+</body>
+</html>
