@@ -10,8 +10,6 @@ vConsole的调用地址
 <br/>
 
 
-
-
 ![image](http://img.chenzejiang.com/github/get-device-info/qrcode.png)
 
 
