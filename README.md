@@ -11,7 +11,7 @@ vConsole的调用地址
 
 
 ![image](http://img.chenzejiang.com/github/get-device-info/1.png)
-____
+___
 ![image](http://img.chenzejiang.com/github/get-device-info/2.png)
 
 
