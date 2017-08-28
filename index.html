@@ -46,19 +46,21 @@
 </div>
 
 <div>
-  <p>IP地址:<em id="ip_address"></em></p>
-  <p>物理地址:<em id="physics_address"></em></p>
+  <!--<p>IP地址:<em id="ip_address"></em></p>-->
+  <!--<p>物理地址:<em id="physics_address"></em></p>-->
   <p id="l_a">本地地址:<em id="localhost_address"></em></p>
+  <p>当前系统为：<em class="system_v" id="system_v"></em></p>
 </div>
 
 <p class="qrcode_p">当前页面二维码如下:</p>
 <div id="qrcode"></div>
 
 <!--获取实际ip-->
-<script src="//chenzejiang.com/cdn/frame/vconsole/vconsole.min.js" type="text/javascript"></script>
-<script src="//chenzejiang.com/cdn/frame/jquery/jquery-1.11.0.min.js" type="text/javascript"></script>
-<script src="//chenzejiang.com/cdn/frame/qrcode/js.qrcode.min.js" type="text/javascript"></script>
-<script src="http://pv.sohu.com/cityjson?ie=utf-8" type="text/javascript"></script>
+<script src="//cdn.chenzejiang.com/frame/vconsole/vconsole.min.js" type="text/javascript"></script>
+<script src="//cdn.chenzejiang.com/frame/jquery/jquery-1.11.0.min.js" type="text/javascript"></script>
+<script src="//cdn.chenzejiang.com/frame/qrcode/js.qrcode.min.js" type="text/javascript"></script>
+<script src="js/get-device-info.js" type="text/javascript"></script>
+<!--<script src="http://pv.sohu.com/cityjson?ie=utf-8" type="text/javascript"></script>-->
 <script src="info.php" type="text/javascript"></script>
 <script type="text/javascript">
 (function(){
@@ -78,19 +80,47 @@
         $("#window_screen_w").html(window.screen.width);
         $("#window_screen_h").html(window.screen.height);
 
-        $("#ip_address").html(returnCitySN["cip"]);
-        $("#physics_address").html(returnCitySN["cname"]);
+        //        $("#ip_address").html(returnCitySN["cip"]);
+        //        $("#physics_address").html(returnCitySN["cname"]);
+
+        $("#system_v").html(detectOS());
     }
+    
     var host = window.location.host;
     if(host.indexOf("192.168") !== -1){
         $.getScript("info.php");
     }else{
         $("#l_a").remove();
     }
+    function detectOS() {
+        var sUserAgent = navigator.userAgent;
+        var isWin = (navigator.platform == "Win32") || (navigator.platform == "Windows");
+        var isMac = (navigator.platform == "Mac68K") || (navigator.platform == "MacPPC") || (navigator.platform == "Macintosh") || (navigator.platform == "MacIntel");
+        if (isMac) return "Mac";
+        var isUnix = (navigator.platform == "X11") && !isWin && !isMac;
+        if (isUnix) return "Unix";
+        var isLinux = (String(navigator.platform).indexOf("Linux") > -1);
+        if (isLinux) return "Linux";
+        if (isWin) {
+            var isWin2K = sUserAgent.indexOf("Windows NT 5.0") > -1 || sUserAgent.indexOf("Windows 2000") > -1;
+            if (isWin2K) return "Win2000";
+            var isWinXP = sUserAgent.indexOf("Windows NT 5.1") > -1 || sUserAgent.indexOf("Windows XP") > -1;
+            if (isWinXP) return "WinXP";
+            var isWin2003 = sUserAgent.indexOf("Windows NT 5.2") > -1 || sUserAgent.indexOf("Windows 2003") > -1;
+            if (isWin2003) return "Win2003";
+            var isWinVista= sUserAgent.indexOf("Windows NT 6.0") > -1 || sUserAgent.indexOf("Windows Vista") > -1;
+            if (isWinVista) return "WinVista";
+            var isWin7 = sUserAgent.indexOf("Windows NT 6.1") > -1 || sUserAgent.indexOf("Windows 7") > -1;
+            if (isWin7) return "Win7";
+            var isWin10 = sUserAgent.indexOf("Windows NT 10") > -1 || sUserAgent.indexOf("Windows 10") > -1;
+            if (isWin10) return "Win10";
+        }
+        return "other";
+    }
     var qrcode = new QRCode(document.getElementById("qrcode"), {
         text: window.location.href ,
-        width: 150,
-        height: 150,
+        width: 130,
+        height: 130,
         colorDark : "#000000",
         colorLight : "#ffffff",
         correctLevel : QRCode.CorrectLevel.H
